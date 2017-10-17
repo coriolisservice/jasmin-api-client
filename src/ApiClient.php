@@ -82,21 +82,21 @@ class ApiClient
      */
     private function setParameters($phone_number, $message, $transmitter) 
     {
-        $this->parameters = [
+        $this->parameters = array(
             'username' => $this->username,
             'password' => $this->password,
             'to' => $phone_number,
             'from' => $transmitter,
             'content' => $message,
-        ];
+        );
         // add dlr parameters
         if ($this->dlr === true && in_array($this->dlr_level, [1, 2, 3]) && in_array($this->dlr_method, ['GET', 'POST']) && $this->dlr_url != '') {
-            $this->parameters += [
+            $this->parameters += array(
                 'dlr' => 'yes',
                 'dlr-url' => $this->dlr_url,
                 'dlr-level' => $this->dlr_level,
                 'dlr-method' => $this->dlr_method,
-            ];
+            );
         }
     }
     
@@ -117,11 +117,11 @@ class ApiClient
     public function sendSmsHttpApi()
     {
         try {
-            $client = new Client(['base_uri' => $this->base_uri]);
-            $response = $client->get('/send', [
+            $client = new Client(array('base_uri' => $this->base_uri));
+            $response = $client->get('/send', array(
                 'debug' => TRUE,
                 'query' => $this->getParameters(),
-            ]);
+            ));
 
             if ($response->getStatusCode() == 200) {
                 // body is like Success "07033084-5cfd-4812-90a4-e4d24ffb6e3d"
@@ -143,12 +143,12 @@ class ApiClient
     public function sendSmsRestApi()
     {
         try {
-            $client = new Client(['base_uri' => $this->base_uri]);
-            $response = $client->post('/secure/send/', [
+            $client = new Client(array('base_uri' => $this->base_uri));
+            $response = $client->post('/secure/send/', array(
                 'debug' => TRUE,
-                'auth' => [$this->username, $this->password],
+                'auth' => array($this->username, $this->password),
                 'json' => $this->getParameters(),
-            ]);
+            ));
             if ($response->getStatusCode() == 200) {
                 // body is like Success "07033084-5cfd-4812-90a4-e4d24ffb6e3d"
                 $messageId = substr($response->getBody(), 9, strlen($response->getBody()) - 9 - 1);
