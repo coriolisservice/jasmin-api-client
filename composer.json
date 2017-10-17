@@ -21,5 +21,6 @@
         "psr-4": {
             "Coriolis\\Jasmin\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }
