@@ -2,8 +2,6 @@
 
 namespace Coriolis\Jasmin;
 
-use GuzzleHttp\Client;
-
 /**
 *  A sample class
 *
@@ -117,15 +115,12 @@ class ApiClient
     public function sendSmsHttpApi()
     {
         try {
-            $client = new Client(array('base_uri' => $this->base_uri));
-            $response = $client->get('/send', array(
-                'debug' => TRUE,
-                'query' => $this->getParameters(),
-            ));
-
-            if ($response->getStatusCode() == 200) {
+            
+            $client = new \RestClient(array('base_url' => $this->base_uri));
+            $result = $client->get('send', $this->getParameters());
+            if($result->info->http_code == 200) {
                 // body is like Success "07033084-5cfd-4812-90a4-e4d24ffb6e3d"
-                $messageId = substr($response->getBody(), 9, strlen($response->getBody()) - 9 - 1);
+                $messageId = substr($result->response, 9, strlen($result->response) - 9 - 1);
             } else {
                 throw new \Exception('Non-handled exception : return status code is not 200');
             }
@@ -142,23 +137,7 @@ class ApiClient
      */
     public function sendSmsRestApi()
     {
-        try {
-            $client = new Client(array('base_uri' => $this->base_uri));
-            $response = $client->post('/secure/send/', array(
-                'debug' => TRUE,
-                'auth' => array($this->username, $this->password),
-                'json' => $this->getParameters(),
-            ));
-            if ($response->getStatusCode() == 200) {
-                // body is like Success "07033084-5cfd-4812-90a4-e4d24ffb6e3d"
-                $messageId = substr($response->getBody(), 9, strlen($response->getBody()) - 9 - 1);
-            } else {
-                throw new \Exception('Non-handled exception : return status code is not 200');
-            }
-        } catch (\Exception $e) {
-            throw new \Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
-        }
-        return $messageId;
+        return false;
     }  
     
 }
