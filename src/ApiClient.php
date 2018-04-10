@@ -135,7 +135,7 @@ class ApiClient
                 // body is like Success "07033084-5cfd-4812-90a4-e4d24ffb6e3d"
                 $messageId = substr($result->response, 9, strlen($result->response) - 9 - 1);
             } else {
-                throw new \Exception('Non-handled exception : return status code is not 200');
+                throw new \Exception($result->response);
             }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage(), $e->getCode(), $e->getPrevious());
